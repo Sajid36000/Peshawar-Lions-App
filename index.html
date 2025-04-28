@@ -5,469 +5,692 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peshawar Lions - Cricket Team App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* === LION ROAR SPLASH SCREEN === */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            overflow: hidden;
-        }
-        
-        .logo-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-        }
-        
-        .lion-logo {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            animation: roar 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            transform-origin: center;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0));
-        }
-        
-        .gold-light {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(255,215,0,0.8) 0%, rgba(255,215,0,0) 70%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            animation: lightPulse 2.5s 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-        
-        @keyframes roar {
-            0% { transform: scale(0.5) rotate(0deg); filter: drop-shadow(0 0 0px rgba(255, 215, 0, 0)); }
-            20% { transform: scale(1.1) rotate(-5deg); filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5)); }
-            40% { transform: scale(0.95) rotate(5deg); }
-            60% { transform: scale(1.05) rotate(-3deg); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8)); }
-            80% { transform: scale(0.98) rotate(2deg); }
-            100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.3)); }
-        }
-        
-        @keyframes lightPulse {
-            0% { width: 0; height: 0; opacity: 0; }
-            20% { width: 150px; height: 150px; opacity: 0.8; }
-            100% { width: 300px; height: 300px; opacity: 0; }
-        }
-        
-        .loading-text {
-            color: #ffd700;
-            margin-top: 30px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0;
-            animation: fadeIn 0.5s 1s forwards;
-        }
-
-        /* === MAIN APP STYLES === */
-        :root {
-            --primary-color: #1a5276;
-            --secondary-color: #f39c12;
-            --accent-color: #e74c3c;
-            --light-color: #f5f5f5;
-            --dark-color: #333;
-            --text-color: #333;
-            --text-light: #777;
-            --border-color: #ddd;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
-            --info-color: #3498db;
-            --sidebar-width: 250px;
-            --header-height: 60px;
-            --transition-speed: 0.3s;
-        }
-
-        [data-theme="dark"] {
-            --light-color: #2c3e50;
-            --dark-color: #ecf0f1;
-            --text-color: #ecf0f1;
-            --text-light: #bdc3c7;
-            --border-color: #34495e;
-            --primary-color: #3498db;
-            --secondary-color: #f1c40f;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--light-color);
-            color: var(--text-color);
-            transition: background-color var(--transition-speed), color var(--transition-speed);
-        }
-
-        .app-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* === REST OF YOUR CSS STYLES === */
-        /* ... (all your existing CSS styles remain the same) ... */
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="assets/logo.png">
 </head>
 <body>
     <!-- Splash Screen -->
     <div id="splash-screen">
-        <div class="logo-container">
-            <div class="gold-light"></div>
-            <img src="https://i.postimg.cc/mz1GXcRX/logo.png" class="lion-logo" alt="Peshawar Lions Logo">
+        <div class="splash-content">
+            <img src="assets/logo.png" alt="Peshawar Lions Logo" class="logo-animation">
+            <h1>Peshawar Lions</h1>
+            <div class="spinner"></div>
         </div>
-        <div class="loading-text">PESHAWAR LIONS</div>
     </div>
 
     <!-- Main App Container -->
-    <div class="app-container" style="display:none;">
-        <!-- Sidebar Navigation -->
-        <div class="sidebar">
-            <div class="logo-container">
-                <img src="https://i.postimg.cc/mz1GXcRX/logo.png" class="logo" alt="Peshawar Lions Logo">
+    <div id="app-container" class="hidden">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <img src="assets/logo.png" alt="Peshawar Lions Logo">
                 <h1>Peshawar Lions</h1>
+                <button id="theme-toggle" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="admin-login-btn" class="btn btn-sm btn-primary">Admin Login</button>
             </div>
-            <nav>
-                <ul>
-                    <li class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</li>
-                    <li data-section="players"><i class="fas fa-users"></i> Players</li>
-                    <li data-section="matches"><i class="fas fa-calendar-alt"></i> Matches</li>
-                    <li data-section="stats"><i class="fas fa-chart-bar"></i> Statistics</li>
-                    <li data-section="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</li>
-                    <li data-section="feed"><i class="fas fa-newspaper"></i> Team Feed</li>
-                    <li data-section="admin"><i class="fas fa-cog"></i> Admin Panel</li>
-                </ul>
-            </nav>
-            <div class="theme-toggle">
-                <i class="fas fa-moon"></i> Dark Mode
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li class="nav-item active" data-tab="dashboard"><i class="fas fa-home"></i> <span>Dashboard</span></li>
+                <li class="nav-item" data-tab="players"><i class="fas fa-users"></i> <span>Players</span></li>
+                <li class="nav-item" data-tab="matches"><i class="fas fa-calendar-alt"></i> <span>Matches</span></li>
+                <li class="nav-item" data-tab="statistics"><i class="fas fa-chart-bar"></i> <span>Stats</span></li>
+                <li class="nav-item" data-tab="leaderboard"><i class="fas fa-trophy"></i> <span>Leaderboard</span></li>
+                <li class="nav-item" data-tab="feed"><i class="fas fa-newspaper"></i> <span>Team Feed</span></li>
+                <li class="nav-item" data-tab="admin" id="admin-tab"><i class="fas fa-lock"></i> <span>Admin</span></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="dashboard-container">
+                    <div class="upcoming-matches">
+                        <h2><i class="fas fa-calendar-day"></i> Upcoming Matches</h2>
+                        <div id="upcoming-matches-list" class="matches-list"></div>
+                    </div>
+                    
+                    <div class="recent-performances">
+                        <h2><i class="fas fa-star"></i> Recent Top Performers</h2>
+                        <div id="top-performers" class="performers-grid"></div>
+                    </div>
+                    
+                    <div class="quick-stats">
+                        <div class="stat-card">
+                            <h3>Total Matches</h3>
+                            <p id="total-matches">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Runs</h3>
+                            <p id="total-runs">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Wickets</h3>
+                            <p id="total-wickets">0</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Main Content Area -->
-        <div class="main-content">
-            <!-- Dashboard Section -->
-            <section id="dashboard" class="content-section active">
-                <!-- ... (your existing dashboard content) ... -->
-            </section>
+            <!-- Players Tab -->
+            <div id="players" class="tab-content">
+                <div class="players-header">
+                    <h2>Team Players</h2>
+                    <button id="add-player-btn" class="btn btn-primary admin-only"><i class="fas fa-plus"></i> Add Player</button>
+                </div>
+                
+                <div class="players-filter">
+                    <select id="player-role-filter">
+                        <option value="all">All Roles</option>
+                        <option value="batsman">Batsmen</option>
+                        <option value="bowler">Bowlers</option>
+                        <option value="all-rounder">All-Rounders</option>
+                        <option value="keeper">Wicket Keepers</option>
+                    </select>
+                    <input type="text" id="player-search" placeholder="Search players...">
+                </div>
+                
+                <div id="players-list" class="players-grid"></div>
+                
+                <!-- Player Modal -->
+                <div id="player-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div id="player-modal-content"></div>
+                    </div>
+                </div>
+                
+                <!-- Add/Edit Player Form -->
+                <div id="player-form-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 id="player-form-title">Add New Player</h2>
+                        <form id="player-form">
+                            <input type="hidden" id="player-id">
+                            <div class="form-group">
+                                <label for="player-name">Full Name</label>
+                                <input type="text" id="player-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="player-role">Role</label>
+                                <select id="player-role" required>
+                                    <option value="batsman">Batsman</option>
+                                    <option value="bowler">Bowler</option>
+                                    <option value="all-rounder">All-Rounder</option>
+                                    <option value="keeper">Wicket Keeper</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="player-batting-style">Batting Style</label>
+                                <input type="text" id="player-batting-style" placeholder="e.g., Right-hand bat">
+                            </div>
+                            <div class="form-group">
+                                <label for="player-bowling-style">Bowling Style</label>
+                                <input type="text" id="player-bowling-style" placeholder="e.g., Right-arm fast">
+                            </div>
+                            <div class="form-group">
+                                <label for="player-photo">Photo URL</label>
+                                <input type="text" id="player-photo" placeholder="URL or upload file">
+                                <small>For now, please provide a URL. File upload coming soon.</small>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Player</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Players Section -->
-            <section id="players" class="content-section">
-                <!-- ... (your existing players content) ... -->
-            </section>
+            <!-- Matches Tab -->
+            <div id="matches" class="tab-content">
+                <div class="matches-header">
+                    <h2>Matches</h2>
+                    <button id="add-match-btn" class="btn btn-primary admin-only"><i class="fas fa-plus"></i> Add Match</button>
+                </div>
+                
+                <div class="matches-filter">
+                    <select id="match-type-filter">
+                        <option value="all">All Match Types</option>
+                        <option value="friendly">Friendly</option>
+                        <option value="league">League</option>
+                        <option value="tournament">Tournament</option>
+                    </select>
+                    <select id="match-status-filter">
+                        <option value="all">All Statuses</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                
+                <div id="matches-list" class="matches-grid"></div>
+                
+                <!-- Match Details Modal -->
+                <div id="match-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div id="match-modal-content"></div>
+                    </div>
+                </div>
+                
+                <!-- Add/Edit Match Form -->
+                <div id="match-form-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 id="match-form-title">Add New Match</h2>
+                        <form id="match-form">
+                            <input type="hidden" id="match-id">
+                            <div class="form-group">
+                                <label for="match-opponent">Opponent Team</label>
+                                <input type="text" id="match-opponent" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="match-date">Date & Time</label>
+                                <input type="datetime-local" id="match-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="match-location">Location</label>
+                                <input type="text" id="match-location" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="match-type">Match Type</label>
+                                <select id="match-type" required>
+                                    <option value="friendly">Friendly</option>
+                                    <option value="league">League</option>
+                                    <option value="tournament">Tournament</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="match-overs">Overs per Innings</label>
+                                <input type="number" id="match-overs" min="1" max="50" value="20">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Match</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Live Scoring Modal -->
+                <div id="scoring-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 id="scoring-title">Live Scoring</h2>
+                        <div id="scoring-content">
+                            <div class="scoring-header">
+                                <div class="teams-score">
+                                    <div class="team">
+                                        <h3>Peshawar Lions</h3>
+                                        <p id="pl-score">0/0 (0.0)</p>
+                                    </div>
+                                    <div class="vs">vs</div>
+                                    <div class="team">
+                                        <h3 id="opponent-name">Opponent</h3>
+                                        <p id="opponent-score">0/0 (0.0)</p>
+                                    </div>
+                                </div>
+                                <div class="match-info">
+                                    <p id="match-info-text">20 overs match</p>
+                                    <p id="toss-info">Toss: Peshawar Lions elected to bat</p>
+                                </div>
+                            </div>
+                            
+                            <div class="scoring-controls">
+                                <div class="current-batters">
+                                    <h4>Current Batters</h4>
+                                    <div class="batters-list" id="current-batters"></div>
+                                </div>
+                                <div class="current-bowler">
+                                    <h4>Current Bowler</h4>
+                                    <select id="current-bowler-select"></select>
+                                </div>
+                            </div>
+                            
+                            <div class="scoring-buttons">
+                                <button class="score-btn" data-runs="0">0</button>
+                                <button class="score-btn" data-runs="1">1</button>
+                                <button class="score-btn" data-runs="2">2</button>
+                                <button class="score-btn" data-runs="3">3</button>
+                                <button class="score-btn" data-runs="4">4</button>
+                                <button class="score-btn" data-runs="6">6</button>
+                                <button class="score-btn" data-runs="w">W</button>
+                                <button class="score-btn" data-runs="wd">WD</button>
+                                <button class="score-btn" data-runs="nb">NB</button>
+                                <button class="score-btn" data-runs="lb">LB</button>
+                                <button class="score-btn" data-runs="b">B</button>
+                            </div>
+                            
+                            <div class="scoring-actions">
+                                <button id="undo-btn" class="btn btn-warning">Undo</button>
+                                <button id="end-innings-btn" class="btn btn-danger">End Innings</button>
+                                <button id="save-match-btn" class="btn btn-success">Save Match</button>
+                            </div>
+                            
+                            <div class="scoring-summary">
+                                <div class="scorecard" id="batting-scorecard"></div>
+                                <div class="scorecard" id="bowling-scorecard"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Matches Section -->
-            <section id="matches" class="content-section">
-                <!-- ... (your existing matches content) ... -->
-            </section>
+            <!-- Statistics Tab -->
+            <div id="statistics" class="tab-content">
+                <h2>Player Statistics</h2>
+                
+                <div class="stats-filters">
+                    <select id="stats-player-filter">
+                        <option value="all">All Players</option>
+                    </select>
+                    <select id="stats-match-type-filter">
+                        <option value="all">All Match Types</option>
+                        <option value="friendly">Friendly</option>
+                        <option value="league">League</option>
+                        <option value="tournament">Tournament</option>
+                    </select>
+                    <select id="stats-time-filter">
+                        <option value="all">All Time</option>
+                        <option value="last-5">Last 5 Matches</option>
+                        <option value="last-10">Last 10 Matches</option>
+                        <option value="this-month">This Month</option>
+                        <option value="this-year">This Year</option>
+                    </select>
+                </div>
+                
+                <div class="stats-tabs">
+                    <button class="stats-tab-btn active" data-stat="batting">Batting</button>
+                    <button class="stats-tab-btn" data-stat="bowling">Bowling</button>
+                    <button class="stats-tab-btn" data-stat="fielding">Fielding</button>
+                </div>
+                
+                <div id="batting-stats" class="stats-content active">
+                    <div class="stats-table-container">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Matches</th>
+                                    <th>Innings</th>
+                                    <th>Runs</th>
+                                    <th>HS</th>
+                                    <th>Avg</th>
+                                    <th>SR</th>
+                                    <th>100s</th>
+                                    <th>50s</th>
+                                    <th>4s</th>
+                                    <th>6s</th>
+                                </tr>
+                            </thead>
+                            <tbody id="batting-stats-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="stats-chart">
+                        <canvas id="batting-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div id="bowling-stats" class="stats-content">
+                    <div class="stats-table-container">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Matches</th>
+                                    <th>Overs</th>
+                                    <th>Wickets</th>
+                                    <th>Best</th>
+                                    <th>Avg</th>
+                                    <th>Econ</th>
+                                    <th>SR</th>
+                                    <th>4w</th>
+                                    <th>5w</th>
+                                    <th>Mdns</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bowling-stats-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="stats-chart">
+                        <canvas id="bowling-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div id="fielding-stats" class="stats-content">
+                    <div class="stats-table-container">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Matches</th>
+                                    <th>Catches</th>
+                                    <th>Stumpings</th>
+                                    <th>Run Outs</th>
+                                    <th>Drops</th>
+                                    <th>Catch %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fielding-stats-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="stats-chart">
+                        <canvas id="fielding-chart"></canvas>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Statistics Section -->
-            <section id="stats" class="content-section">
-                <!-- ... (your existing stats content) ... -->
-            </section>
+            <!-- Leaderboard Tab -->
+            <div id="leaderboard" class="tab-content">
+                <h2>Leaderboards</h2>
+                
+                <div class="leaderboard-tabs">
+                    <button class="leaderboard-tab-btn active" data-leaderboard="batting">Batting</button>
+                    <button class="leaderboard-tab-btn" data-leaderboard="bowling">Bowling</button>
+                    <button class="leaderboard-tab-btn" data-leaderboard="fielding">Fielding</button>
+                    <button class="leaderboard-tab-btn" data-leaderboard="mvp">MVP</button>
+                </div>
+                
+                <div id="batting-leaderboard" class="leaderboard-content active">
+                    <div class="leaderboard-filters">
+                        <select id="batting-leaderboard-filter">
+                            <option value="runs">Most Runs</option>
+                            <option value="average">Highest Average</option>
+                            <option value="strike-rate">Highest Strike Rate</option>
+                            <option value="fours">Most Fours</option>
+                            <option value="sixes">Most Sixes</option>
+                            <option value="fifties">Most 50s</option>
+                            <option value="hundreds">Most 100s</option>
+                        </select>
+                    </div>
+                    <div class="leaderboard-table-container">
+                        <table class="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Matches</th>
+                                    <th>Innings</th>
+                                    <th id="batting-leaderboard-header">Runs</th>
+                                </tr>
+                            </thead>
+                            <tbody id="batting-leaderboard-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="bowling-leaderboard" class="leaderboard-content">
+                    <div class="leaderboard-filters">
+                        <select id="bowling-leaderboard-filter">
+                            <option value="wickets">Most Wickets</option>
+                            <option value="average">Best Average</option>
+                            <option value="economy">Best Economy</option>
+                            <option value="strike-rate">Best Strike Rate</option>
+                            <option value="four-wickets">Most 4-wicket hauls</option>
+                            <option value="five-wickets">Most 5-wicket hauls</option>
+                            <option value="maidens">Most Maidens</option>
+                        </select>
+                    </div>
+                    <div class="leaderboard-table-container">
+                        <table class="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Matches</th>
+                                    <th>Overs</th>
+                                    <th id="bowling-leaderboard-header">Wickets</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bowling-leaderboard-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="fielding-leaderboard" class="leaderboard-content">
+                    <div class="leaderboard-filters">
+                        <select id="fielding-leaderboard-filter">
+                            <option value="catches">Most Catches</option>
+                            <option value="stumpings">Most Stumpings</option>
+                            <option value="run-outs">Most Run Outs</option>
+                            <option value="dismissals">Most Dismissals</option>
+                            <option value="catch-percentage">Best Catch %</option>
+                        </select>
+                    </div>
+                    <div class="leaderboard-table-container">
+                        <table class="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Matches</th>
+                                    <th id="fielding-leaderboard-header">Catches</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fielding-leaderboard-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="mvp-leaderboard" class="leaderboard-content">
+                    <div class="mvp-points-info">
+                        <p>MVP points are calculated based on overall performance (runs, wickets, catches, strike rates, etc.)</p>
+                    </div>
+                    <div class="leaderboard-table-container">
+                        <table class="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Matches</th>
+                                    <th>MVP Points</th>
+                                    <th>Performance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mvp-leaderboard-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Leaderboard Section -->
-            <section id="leaderboard" class="content-section">
-                <!-- ... (your existing leaderboard content) ... -->
-            </section>
+            <!-- Team Feed Tab -->
+            <div id="feed" class="tab-content">
+                <div class="feed-header">
+                    <h2>Team Feed</h2>
+                    <button id="add-post-btn" class="btn btn-primary admin-only"><i class="fas fa-plus"></i> Add Post</button>
+                </div>
+                
+                <div id="feed-posts" class="posts-container"></div>
+                
+                <!-- Add Post Modal -->
+                <div id="post-form-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Create New Post</h2>
+                        <form id="post-form">
+                            <div class="form-group">
+                                <label for="post-title">Title</label>
+                                <input type="text" id="post-title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="post-content">Content</label>
+                                <textarea id="post-content" rows="5" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="post-image">Image URL (optional)</label>
+                                <input type="text" id="post-image" placeholder="URL to image">
+                            </div>
+                            <div class="form-group">
+                                <label for="post-type">Post Type</label>
+                                <select id="post-type">
+                                    <option value="news">News</option>
+                                    <option value="match-report">Match Report</option>
+                                    <option value="poll">Poll</option>
+                                    <option value="announcement">Announcement</option>
+                                </select>
+                            </div>
+                            <div id="poll-options-container" class="hidden">
+                                <label>Poll Options (one per line)</label>
+                                <textarea id="poll-options" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Post</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Team Feed Section -->
-            <section id="feed" class="content-section">
-                <!-- ... (your existing feed content) ... -->
-            </section>
+            <!-- Admin Panel Tab -->
+            <div id="admin" class="tab-content">
+                <div class="admin-login-container" id="admin-login-container">
+                    <h2>Admin Login</h2>
+                    <form id="admin-login-form">
+                        <div class="form-group">
+                            <label for="admin-username">Username</label>
+                            <input type="text" id="admin-username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password">Password</label>
+                            <input type="password" id="admin-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+                
+                <div class="admin-panel-container hidden" id="admin-panel">
+                    <h2>Admin Panel</h2>
+                    
+                    <div class="admin-tabs">
+                        <button class="admin-tab-btn active" data-admin-tab="data-management">Data Management</button>
+                        <button class="admin-tab-btn" data-admin-tab="settings">Settings</button>
+                        <button class="admin-tab-btn" data-admin-tab="backup">Backup/Restore</button>
+                    </div>
+                    
+                    <div id="data-management" class="admin-tab-content active">
+                        <h3>Data Management</h3>
+                        
+                        <div class="admin-section">
+                            <h4>Import Data</h4>
+                            <div class="import-options">
+                                <div class="import-option">
+                                    <label for="import-players">Players</label>
+                                    <input type="file" id="import-players" accept=".json,.csv,.xlsx">
+                                    <button class="btn btn-sm btn-primary" id="import-players-btn">Import Players</button>
+                                </div>
+                                <div class="import-option">
+                                    <label for="import-matches">Matches</label>
+                                    <input type="file" id="import-matches" accept=".json,.csv,.xlsx">
+                                    <button class="btn btn-sm btn-primary" id="import-matches-btn">Import Matches</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-section">
+                            <h4>Export Data</h4>
+                            <div class="export-options">
+                                <button class="btn btn-primary" id="export-players-btn">Export Players Data</button>
+                                <button class="btn btn-primary" id="export-matches-btn">Export Matches Data</button>
+                                <button class="btn btn-primary" id="export-stats-btn">Export Statistics</button>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-section">
+                            <h4>Reset Data</h4>
+                            <p class="warning-text">Warning: These actions cannot be undone!</p>
+                            <div class="reset-options">
+                                <button class="btn btn-danger" id="reset-players-btn">Reset Players Data</button>
+                                <button class="btn btn-danger" id="reset-matches-btn">Reset Matches Data</button>
+                                <button class="btn btn-danger" id="reset-all-btn">Reset ALL Data</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="settings" class="admin-tab-content">
+                        <h3>App Settings</h3>
+                        
+                        <div class="admin-section">
+                            <h4>Team Settings</h4>
+                            <form id="team-settings-form">
+                                <div class="form-group">
+                                    <label for="team-name">Team Name</label>
+                                    <input type="text" id="team-name" value="Peshawar Lions">
+                                </div>
+                                <div class="form-group">
+                                    <label for="team-logo">Team Logo URL</label>
+                                    <input type="text" id="team-logo" value="assets/logo.png">
+                                </div>
+                                <div class="form-group">
+                                    <label for="primary-color">Primary Color</label>
+                                    <input type="color" id="primary-color" value="#1a5276">
+                                </div>
+                                <div class="form-group">
+                                    <label for="secondary-color">Secondary Color</label>
+                                    <input type="color" id="secondary-color" value="#f39c12">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Settings</button>
+                            </form>
+                        </div>
+                        
+                        <div class="admin-section">
+                            <h4>Admin Settings</h4>
+                            <form id="admin-settings-form">
+                                <div class="form-group">
+                                    <label for="new-username">New Username</label>
+                                    <input type="text" id="new-username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-password">New Password</label>
+                                    <input type="password" id="new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm Password</label>
+                                    <input type="password" id="confirm-password">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Change Credentials</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div id="backup" class="admin-tab-content">
+                        <h3>Backup & Restore</h3>
+                        
+                        <div class="admin-section">
+                            <h4>Create Backup</h4>
+                            <p>Create a complete backup of all app data.</p>
+                            <button class="btn btn-primary" id="create-backup-btn">Create Backup</button>
+                        </div>
+                        
+                        <div class="admin-section">
+                            <h4>Restore Backup</h4>
+                            <p>Restore from a previously created backup file.</p>
+                            <input type="file" id="restore-backup-file" accept=".json">
+                            <button class="btn btn-primary" id="restore-backup-btn">Restore Backup</button>
+                        </div>
+                        
+                        <div class="admin-section">
+                            <h4>Cloud Backup</h4>
+                            <p>Connect to Google Drive or Dropbox for automatic backups.</p>
+                            <button class="btn btn-primary" id="connect-drive-btn">Connect Google Drive</button>
+                            <button class="btn btn-primary" id="connect-dropbox-btn">Connect Dropbox</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
 
-            <!-- Admin Panel Section -->
-            <section id="admin" class="content-section">
-                <!-- ... (your existing admin content) ... -->
-            </section>
-        </div>
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2023 Peshawar Lions Cricket Team. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#" id="export-data-btn">Export Data</a>
+                <a href="#" id="about-btn">About</a>
+                <a href="#" id="help-btn">Help</a>
+            </div>
+        </footer>
     </div>
 
-    <!-- All Modals -->
-    <!-- ... (your existing modals) ... -->
-
-    <script>
-        class PeshawarLionsApp {
-            constructor() {
-                this.players = [];
-                this.matches = [];
-                this.stats = [];
-                this.feedPosts = [];
-                this.currentUser = null;
-                this.isDarkMode = false;
-                
-                // Initialize with realistic empty stats
-                this.initializeStats();
-            }
-
-            initializeStats() {
-                // Reset all players to zero stats
-                this.stats = this.players.map(player => ({
-                    playerId: player.id,
-                    batting: {
-                        matches: 0,
-                        innings: 0,
-                        runs: 0,
-                        highest: 0,
-                        average: 0,
-                        strikeRate: 0,
-                        fifties: 0,
-                        centuries: 0
-                    },
-                    bowling: {
-                        matches: 0,
-                        innings: 0,
-                        wickets: 0,
-                        best: "0/0",
-                        average: 0,
-                        economy: 0,
-                        fiveWickets: 0
-                    }
-                }));
-            }
-
-            init() {
-                // Hide splash screen after animation
-                setTimeout(() => {
-                    document.getElementById('splash-screen').style.opacity = '0';
-                    document.querySelector('.app-container').style.display = 'flex';
-                    
-                    setTimeout(() => {
-                        document.getElementById('splash-screen').style.display = 'none';
-                    }, 1000);
-                }, 3500);
-
-                this.loadData();
-                this.setupEventListeners();
-                this.checkAuth();
-                this.showSection('dashboard');
-                this.renderPlayers();
-                this.renderMatches();
-                this.renderLeaderboards();
-                this.renderDashboard();
-            }
-
-            loadData() {
-                // Load from localStorage
-                const savedPlayers = localStorage.getItem('peshawarLionsPlayers');
-                const savedMatches = localStorage.getItem('peshawarLionsMatches');
-                const savedStats = localStorage.getItem('peshawarLionsStats');
-                const savedFeed = localStorage.getItem('peshawarLionsFeed');
-                const savedUser = localStorage.getItem('peshawarLionsUser');
-                const savedTheme = localStorage.getItem('peshawarLionsTheme');
-
-                this.players = savedPlayers ? JSON.parse(savedPlayers) : [];
-                this.matches = savedMatches ? JSON.parse(savedMatches) : [];
-                this.stats = savedStats ? JSON.parse(savedStats) : [];
-                this.feedPosts = savedFeed ? JSON.parse(savedFeed) : [];
-                this.currentUser = savedUser ? JSON.parse(savedUser) : null;
-                
-                if (savedTheme === 'dark') {
-                    this.toggleDarkMode(true);
-                }
-
-                // Initialize stats for new players
-                this.initializeStats();
-            }
-
-            saveData() {
-                localStorage.setItem('peshawarLionsPlayers', JSON.stringify(this.players));
-                localStorage.setItem('peshawarLionsMatches', JSON.stringify(this.matches));
-                localStorage.setItem('peshawarLionsStats', JSON.stringify(this.stats));
-                localStorage.setItem('peshawarLionsFeed', JSON.stringify(this.feedPosts));
-                localStorage.setItem('peshawarLionsUser', JSON.stringify(this.currentUser));
-                localStorage.setItem('peshawarLionsTheme', this.isDarkMode ? 'dark' : 'light');
-            }
-
-            // Realistic stat calculation methods
-            calculateBattingStats(playerId) {
-                const playerMatches = this.matches.filter(m => 
-                    m.status === 'completed' && 
-                    m.scorecard && 
-                    m.scorecard.batsmen.some(b => b.playerId === playerId)
-                );
-
-                const battingStats = {
-                    matches: playerMatches.length,
-                    innings: 0,
-                    runs: 0,
-                    highest: 0,
-                    average: 0,
-                    strikeRate: 0,
-                    fifties: 0,
-                    centuries: 0
-                };
-
-                playerMatches.forEach(match => {
-                    const playerInnings = match.scorecard.batsmen.filter(b => b.playerId === playerId);
-                    battingStats.innings += playerInnings.length;
-                    
-                    playerInnings.forEach(innings => {
-                        battingStats.runs += innings.runs || 0;
-                        
-                        if (innings.runs > battingStats.highest) {
-                            battingStats.highest = innings.runs;
-                        }
-                        
-                        if (innings.runs >= 50 && innings.runs < 100) battingStats.fifties++;
-                        if (innings.runs >= 100) battingStats.centuries++;
-                    });
-                });
-
-                if (battingStats.innings > 0) {
-                    battingStats.average = (battingStats.runs / battingStats.innings).toFixed(2);
-                    // Calculate realistic strike rate based on balls faced
-                    battingStats.strikeRate = ((battingStats.runs / (battingStats.innings * 30)) * 100).toFixed(2);
-                }
-
-                return battingStats;
-            }
-
-            calculateBowlingStats(playerId) {
-                const playerMatches = this.matches.filter(m => 
-                    m.status === 'completed' && 
-                    m.scorecard && 
-                    m.scorecard.bowlers.some(b => b.playerId === playerId)
-                );
-
-                const bowlingStats = {
-                    matches: playerMatches.length,
-                    innings: 0,
-                    wickets: 0,
-                    best: "0/0",
-                    average: 0,
-                    economy: 0,
-                    fiveWickets: 0
-                };
-
-                playerMatches.forEach(match => {
-                    const playerInnings = match.scorecard.bowlers.filter(b => b.playerId === playerId);
-                    bowlingStats.innings += playerInnings.length;
-                    
-                    playerInnings.forEach(innings => {
-                        bowlingStats.wickets += innings.wickets || 0;
-                        
-                        // Calculate best figures
-                        const figures = `${innings.wickets}/${innings.runs}`;
-                        if (this.isBetterBowlingFigures(figures, bowlingStats.best)) {
-                            bowlingStats.best = figures;
-                        }
-                        
-                        if (innings.wickets >= 5) bowlingStats.fiveWickets++;
-                    });
-                });
-
-                if (bowlingStats.wickets > 0) {
-                    bowlingStats.average = (bowlingStats.runs / bowlingStats.wickets).toFixed(2);
-                    bowlingStats.economy = (bowlingStats.runs / (bowlingStats.innings * 4)).toFixed(2);
-                }
-
-                return bowlingStats;
-            }
-
-            isBetterBowlingFigures(newFigures, currentBest) {
-                const [newWickets, newRuns] = newFigures.split('/').map(Number);
-                const [currentWickets, currentRuns] = currentBest.split('/').map(Number);
-                
-                if (newWickets > currentWickets) return true;
-                if (newWickets === currentWickets && newRuns < currentRuns) return true;
-                return false;
-            }
-
-            // ... rest of your methods with proper stat calculations ...
-
-            updatePlayerStats(match) {
-                if (!match.scorecard) return;
-
-                // Update batsmen stats
-                match.scorecard.batsmen.forEach(batsman => {
-                    const playerStats = this.stats.find(s => s.playerId === batsman.playerId) || {
-                        playerId: batsman.playerId,
-                        batting: { matches: 0, innings: 0, runs: 0, highest: 0 },
-                        bowling: { matches: 0, innings: 0, wickets: 0, best: "0/0" }
-                    };
-
-                    // Update batting stats
-                    playerStats.batting.matches = this.matches.filter(m => 
-                        m.status === 'completed' && 
-                        m.scorecard.batsmen.some(b => b.playerId === batsman.playerId)
-                    ).length;
-
-                    playerStats.batting.innings++;
-                    playerStats.batting.runs += batsman.runs || 0;
-                    
-                    if (batsman.runs > playerStats.batting.highest) {
-                        playerStats.batting.highest = batsman.runs;
-                    }
-
-                    // Save updated stats
-                    const existingIndex = this.stats.findIndex(s => s.playerId === batsman.playerId);
-                    if (existingIndex >= 0) {
-                        this.stats[existingIndex] = playerStats;
-                    } else {
-                        this.stats.push(playerStats);
-                    }
-                });
-
-                // Update bowlers stats
-                match.scorecard.bowlers.forEach(bowler => {
-                    const playerStats = this.stats.find(s => s.playerId === bowler.playerId) || {
-                        playerId: bowler.playerId,
-                        batting: { matches: 0, innings: 0, runs: 0, highest: 0 },
-                        bowling: { matches: 0, innings: 0, wickets: 0, best: "0/0" }
-                    };
-
-                    // Update bowling stats
-                    playerStats.bowling.matches = this.matches.filter(m => 
-                        m.status === 'completed' && 
-                        m.scorecard.bowlers.some(b => b.playerId === bowler.playerId)
-                    ).length;
-
-                    playerStats.bowling.innings++;
-                    playerStats.bowling.wickets += bowler.wickets || 0;
-                    
-                    const figures = `${bowler.wickets}/${bowler.runs}`;
-                    if (this.isBetterBowlingFigures(figures, playerStats.bowling.best)) {
-                        playerStats.bowling.best = figures;
-                    }
-
-                    // Save updated stats
-                    const existingIndex = this.stats.findIndex(s => s.playerId === bowler.playerId);
-                    if (existingIndex >= 0) {
-                        this.stats[existingIndex] = playerStats;
-                    } else {
-                        this.stats.push(playerStats);
-                    }
-                });
-
-                this.saveData();
-            }
-
-            // ... rest of your existing methods ...
-        }
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            window.app = new PeshawarLionsApp();
-            app.init();
-        });
-    </script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
 </body>
-    </html>
+                                    </html>
