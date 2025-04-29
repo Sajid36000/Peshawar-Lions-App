@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peshawar Lions - Team Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <img src="assets/logo.png" alt="Peshawar Lions Logo" class="logo-animation">
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container" id="appContainer">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <img src="assets/logo.png" alt="Peshawar Lions Logo" class="header-logo">
+                <h1>Peshawar Lions</h1>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="main-nav" id="mainNav">
+            <ul>
+                <li><a href="#dashboard" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                <li><a href="#players"><i class="fas fa-users"></i> <span>Players</span></a></li>
+                <li><a href="#matches"><i class="fas fa-calendar-alt"></i> <span>Matches</span></a></li>
+                <li><a href="#statistics"><i class="fas fa-chart-bar"></i> <span>Statistics</span></a></li>
+                <li><a href="#leaderboard"><i class="fas fa-trophy"></i> <span>Leaderboard</span></a></li>
+                <li><a href="#team-feed"><i class="fas fa-newspaper"></i> <span>Team Feed</span></a></li>
+                <li><a href="#admin"><i class="fas fa-lock"></i> <span>Admin</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Navigation Toggle -->
+        <button class="mobile-nav-toggle" id="mobileNavToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <h2>Team Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card upcoming-matches">
+                        <h3>Upcoming Matches</h3>
+                        <div class="matches-list" id="upcomingMatchesList"></div>
+                    </div>
+                    <div class="dashboard-card recent-performance">
+                        <h3>Recent Performance</h3>
+                        <div class="performance-stats" id="recentPerformance"></div>
+                    </div>
+                    <div class="dashboard-card top-players">
+                        <h3>Top Performers</h3>
+                        <div class="top-performers" id="topPerformers"></div>
+                    </div>
+                    <div class="dashboard-card quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button class="action-btn" id="addPlayerBtn"><i class="fas fa-user-plus"></i> Add Player</button>
+                            <button class="action-btn" id="createMatchBtn"><i class="fas fa-plus"></i> Create Match</button>
+                            <button class="action-btn" id="viewStatsBtn"><i class="fas fa-chart-line"></i> View Stats</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Players Section -->
+            <section id="players" class="content-section">
+                <div class="section-header">
+                    <h2>Player Management</h2>
+                    <button class="add-btn" id="addNewPlayerBtn"><i class="fas fa-plus"></i> Add Player</button>
+                </div>
+                <div class="search-filter">
+                    <input type="text" id="playerSearch" placeholder="Search players...">
+                    <select id="playerRoleFilter">
+                        <option value="all">All Roles</option>
+                        <option value="Batsman">Batsman</option>
+                        <option value="Bowler">Bowler</option>
+                        <option value="All-Rounder">All-Rounder</option>
+                        <option value="Wicketkeeper">Wicketkeeper</option>
+                    </select>
+                </div>
+                <div class="players-grid" id="playersGrid"></div>
+            </section>
+
+            <!-- Matches Section -->
+            <section id="matches" class="content-section">
+                <div class="section-header">
+                    <h2>Match Center</h2>
+                    <button class="add-btn" id="addNewMatchBtn"><i class="fas fa-plus"></i> Add Match</button>
+                </div>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="upcoming">Upcoming</button>
+                    <button class="tab-btn" data-tab="live">Live</button>
+                    <button class="tab-btn" data-tab="completed">Completed</button>
+                </div>
+                <div class="matches-container">
+                    <div class="tab-content active" id="upcomingMatchesTab">
+                        <div class="matches-list" id="upcomingMatchesContainer"></div>
+                    </div>
+                    <div class="tab-content" id="liveMatchesTab">
+                        <div class="matches-list" id="liveMatchesContainer"></div>
+                    </div>
+                    <div class="tab-content" id="completedMatchesTab">
+                        <div class="matches-list" id="completedMatchesContainer"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section id="statistics" class="content-section">
+                <h2>Player Statistics</h2>
+                <div class="stats-filters">
+                    <select id="statsPlayerSelect">
+                        <option value="">Select Player</option>
+                    </select>
+                    <select id="statsMatchType">
+                        <option value="all">All Formats</option>
+                        <option value="T20">T20</option>
+                        <option value="ODI">ODI</option>
+                        <option value="Test">Test</option>
+                    </select>
+                    <button class="filter-btn" id="applyStatsFilter">Apply Filters</button>
+                </div>
+                <div class="player-stats-container" id="playerStatsContainer">
+                    <div class="stats-overview" id="statsOverview"></div>
+                    <div class="stats-graphs">
+                        <canvas id="runsGraph"></canvas>
+                        <canvas id="wicketsGraph"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leaderboard Section -->
+            <section id="leaderboard" class="content-section">
+                <h2>Leaderboards</h2>
+                <div class="leaderboard-tabs">
+                    <button class="leaderboard-tab active" data-board="runs">Top Run Scorers</button>
+                    <button class="leaderboard-tab" data-board="wickets">Top Wicket Takers</button>
+                    <button class="leaderboard-tab" data-board="economy">Best Economy</button>
+                    <button class="leaderboard-tab" data-board="strike-rate">Highest Strike Rate</button>
+                </div>
+                <div class="leaderboard-container">
+                    <table class="leaderboard-table" id="leaderboardTable">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Matches</th>
+                                <th id="leaderboardStatHeader">Runs</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Team Feed Section -->
+            <section id="team-feed" class="content-section">
+                <div class="section-header">
+                    <h2>Team Feed</h2>
+                    <button class="add-btn" id="addNewPostBtn"><i class="fas fa-plus"></i> New Post</button>
+                </div>
+                <div class="feed-container" id="teamFeedContainer"></div>
+            </section>
+
+            <!-- Admin Section -->
+            <section id="admin" class="content-section">
+                <div class="admin-login" id="adminLoginSection">
+                    <h2>Admin Login</h2>
+                    <form id="adminLoginForm">
+                        <div class="form-group">
+                            <label for="adminUsername">Username</label>
+                            <input type="text" id="adminUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminPassword">Password</label>
+                            <input type="password" id="adminPassword" required>
+                        </div>
+                        <button type="submit" class="login-btn">Login</button>
+                    </form>
+                </div>
+                <div class="admin-panel" id="adminPanelSection" style="display: none;">
+                    <h2>Admin Panel</h2>
+                    <div class="admin-actions">
+                        <div class="admin-card" id="managePlayersCard">
+                            <h3><i class="fas fa-users"></i> Manage Players</h3>
+                            <p>Add, edit, or remove players from the team</p>
+                        </div>
+                        <div class="admin-card" id="manageMatchesCard">
+                            <h3><i class="fas fa-calendar-alt"></i> Manage Matches</h3>
+                            <p>Create and manage matches</p>
+                        </div>
+                        <div class="admin-card" id="importDataCard">
+                            <h3><i class="fas fa-file-import"></i> Import Data</h3>
+                            <p>Import player or match data from CSV/Excel</p>
+                        </div>
+                        <div class="admin-card" id="teamSettingsCard">
+                            <h3><i class="fas fa-cog"></i> Team Settings</h3>
+                            <p>Update team logo, colors, and settings</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Player Modal -->
+        <div class="modal" id="playerModal">
+            <div class="modal-content">
+                <span class="close-btn" id="closePlayerModal">&times;</span>
+                <h2 id="playerModalTitle">Add New Player</h2>
+                <form id="playerForm">
+                    <input type="hidden" id="playerId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="playerName">Full Name*</label>
+                            <input type="text" id="playerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="playerPhoto">Profile Photo</label>
+                            <input type="file" id="playerPhoto" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="battingStyle">Batting Style*</label>
+                            <select id="battingStyle" required>
+                                <option value="">Select</option>
+                                <option value="Right-hand">Right-hand</option>
+                                <option value="Left-hand">Left-hand</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bowlingStyle">Bowling Style*</label>
+                            <select id="bowlingStyle" required>
+                                <option value="">Select</option>
+                                <option value="Pace">Pace</option>
+                                <option value="Spin">Spin</option>
+                                <option value="None">None</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="playerRole">Player Role*</label>
+                        <select id="playerRole" required>
+                            <option value="">Select</option>
+                            <option value="Batsman">Batsman</option>
+                            <option value="Bowler">Bowler</option>
+                            <option value="All-Rounder">All-Rounder</option>
+                            <option value="Wicketkeeper">Wicketkeeper</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save Player</button>
+                        <button type="button" class="cancel-btn" id="cancelPlayerBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Match Modal -->
+        <div class="modal" id="matchModal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeMatchModal">&times;</span>
+                <h2 id="matchModalTitle">Add New Match</h2>
+                <form id="matchForm">
+                    <input type="hidden" id="matchId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="opponentTeam">Opponent Team*</label>
+                            <input type="text" id="opponentTeam" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="matchVenue">Venue*</label>
+                            <input type="text" id="matchVenue" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="matchDate">Date*</label>
+                            <input type="date" id="matchDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="matchType">Match Type*</label>
+                            <select id="matchType" required>
+                                <option value="">Select</option>
+                                <option value="T20">T20</option>
+                                <option value="ODI">ODI</option>
+                                <option value="Test">Test</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save Match</button>
+                        <button type="button" class="cancel-btn" id="cancelMatchBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Live Scoring Modal -->
+        <div class="modal" id="scoringModal">
+            <div class="modal-content wide-modal">
+                <span class="close-btn" id="closeScoringModal">&times;</span>
+                <h2 id="scoringModalTitle">Live Scoring</h2>
+                <div class="scoring-container">
+                    <div class="match-info" id="liveMatchInfo"></div>
+                    <div class="scorecard-container">
+                        <div class="batting-scorecard">
+                            <h3>Batting</h3>
+                            <table class="scorecard-table" id="battingScorecard">
+                                <thead>
+                                    <tr>
+                                        <th>Batsman</th>
+                                        <th>R</th>
+                                        <th>B</th>
+                                        <th>4s</th>
+                                        <th>6s</th>
+                                        <th>SR</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="battingTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="bowling-scorecard">
+                            <h3>Bowling</h3>
+                            <table class="scorecard-table" id="bowlingScorecard">
+                                <thead>
+                                    <tr>
+                                        <th>Bowler</th>
+                                        <th>O</th>
+                                        <th>M</th>
+                                        <th>R</th>
+                                        <th>W</th>
+                                        <th>Econ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bowlingTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="match-summary">
+                        <div class="innings-summary" id="inningsSummary"></div>
+                        <div class="partnership-summary" id="partnershipSummary"></div>
+                    </div>
+                    <div class="scoring-controls">
+                        <div class="current-batters" id="currentBatters"></div>
+                        <div class="current-bowler" id="currentBowler"></div>
+                        <div class="runs-options">
+                            <button class="run-btn" data-runs="0">0</button>
+                            <button class="run-btn" data-runs="1">1</button>
+                            <button class="run-btn" data-runs="2">2</button>
+                            <button class="run-btn" data-runs="3">3</button>
+                            <button class="run-btn" data-runs="4">4</button>
+                            <button class="run-btn" data-runs="6">6</button>
+                        </div>
+                        <div class="extras-options">
+                            <button class="extra-btn" data-extra="wide">Wide</button>
+                            <button class="extra-btn" data-extra="noball">No Ball</button>
+                            <button class="extra-btn" data-extra="bye">Bye</button>
+                            <button class="extra-btn" data-extra="legbye">Leg Bye</button>
+                        </div>
+                        <div class="wicket-options">
+                            <button class="wicket-btn" data-wicket="bowled">Bowled</button>
+                            <button class="wicket-btn" data-wicket="caught">Caught</button>
+                            <button class="wicket-btn" data-wicket="lbw">LBW</button>
+                            <button class="wicket-btn" data-wicket="runout">Run Out</button>
+                            <button class="wicket-btn" data-wicket="stumped">Stumped</button>
+                        </div>
+                        <div class="match-actions">
+                            <button class="action-btn" id="endInningsBtn">End Innings</button>
+                            <button class="action-btn" id="endMatchBtn">End Match</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Modal -->
+        <div class="modal" id="postModal">
+            <div class="modal-content">
+                <span class="close-btn" id="closePostModal">&times;</span>
+                <h2>Create New Post</h2>
+                <form id="postForm">
+                    <div class="form-group">
+                        <label for="postContent">Content*</label>
+                        <textarea id="postContent" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="postMedia">Add Media (Optional)</label>
+                        <input type="file" id="postMedia" accept="image/*,video/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="postPoll">Add Poll (Optional)</label>
+                        <input type="text" id="postPollQuestion" placeholder="Poll question">
+                        <div id="pollOptionsContainer">
+                            <input type="text" class="poll-option" placeholder="Option 1">
+                            <input type="text" class="poll-option" placeholder="Option 2">
+                        </div>
+                        <button type="button" class="add-option-btn" id="addPollOptionBtn">Add Option</button>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Post</button>
+                        <button type="button" class="cancel-btn" id="cancelPostBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Import Data Modal -->
+        <div class="modal" id="importModal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeImportModal">&times;</span>
+                <h2>Import Data</h2>
+                <form id="importForm">
+                    <div class="form-group">
+                        <label for="importType">Import Type*</label>
+                        <select id="importType" required>
+                            <option value="">Select</option>
+                            <option value="players">Players</option>
+                            <option value="matches">Matches</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="importFile">File* (CSV/Excel)</label>
+                        <input type="file" id="importFile" accept=".csv,.xlsx,.xls" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Import</button>
+                        <button type="button" class="cancel-btn" id="cancelImportBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Team Settings Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeSettingsModal">&times;</span>
+                <h2>Team Settings</h2>
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label for="teamLogo">Team Logo</label>
+                        <input type="file" id="teamLogo" accept="image/*">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="primaryColor">Primary Color</label>
+                            <input type="color" id="primaryColor" value="#1a5276">
+                        </div>
+                        <div class="form-group">
+                            <label for="secondaryColor">Secondary Color</label>
+                            <input type="color" id="secondaryColor" value="#f39c12">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="jerseyDesign">Jersey Design (Upload Image)</label>
+                        <input type="file" id="jerseyDesign" accept="image/*">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save Settings</button>
+                        <button type="button" class="cancel-btn" id="cancelSettingsBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
