@@ -29,6 +29,26 @@ import {
   uploadBytes,
   getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+// Enhanced Auth Initialization
+auth.languageCode = 'en'; // Set English language for auth
+
+// Improved Google Sign-In
+function handleGoogleSignIn() {
+  const provider = new GoogleAuthProvider();
+  
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      console.log("Success! User:", result.user);
+      window.location.reload(); // Refresh to update UI
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert(`Login failed: ${error.message}\n\nPlease allow popups and try again.`);
+    });
+}
+
+// Update your login button
+document.getElementById('auth-btn').onclick = handleGoogleSignIn;
 
 // Firebase configuration
 const firebaseConfig = {
@@ -88,6 +108,24 @@ const elements = {
   // Players section
   playersList: document.getElementById('players-list'),
   addPlayerBtn: document.getElementById('add-player-btn'),
+  // Working Player Form Submission
+document.getElementById('player-form').onsubmit = async (e) => {
+  e.preventDefault();
+  
+  const playerData = {
+    name: document.getElementById('player-name').value,
+    role: document.getElementById('player-role').value,
+    // Add other fields...
+  };
+
+  try {
+    await addDoc(collection(db, "players"), playerData);
+    alert("Player added successfully!");
+    e.target.reset(); // Clear form
+  } catch (error) {
+    alert(`Error: ${error.message}`);
+  }
+};
   
   // Matches section
   matchesList: document.getElementById('matches-list'),
