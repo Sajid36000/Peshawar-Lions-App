@@ -1514,3 +1514,25 @@
     </script>
 </body>
 </html>
+<script>
+// Simple Scoring System (add this as a new file or at bottom)
+let score = { runs: 0, wickets: 0, balls: 0 };
+
+function updateScore(button) {
+  const type = button.id.split('-')[1];
+  
+  if (type === '1') score.runs += 1;
+  if (type === '2') score.runs += 2;
+  // Add other cases...
+  
+  if (type !== 'wd' && type !== 'nb') score.balls++;
+  
+  document.getElementById('batting-score').textContent = 
+    `${score.runs}/${score.wickets} (${Math.floor(score.balls/6)}.${score.balls%6})`;
+}
+
+// Connect buttons
+document.querySelectorAll('[id^="score-"]').forEach(btn => {
+  btn.onclick = () => updateScore(btn);
+});
+</script>
